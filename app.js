@@ -4,19 +4,6 @@ const axios = require('axios')
 const token = '5461701015:AAHz8hCEymIIQ6sP2SCU6BIFTzIYfX59By0';
 const bot = new TelegramBot(token, {polling: true});
 
-// bot.on('message', (msg) => {
-//     const chatId = msg.chat.id;
-  
-//     console.log(msg.text)
-
-//     if(msg.text.toLowerCase().includes('иди')){
-//         bot.sendMessage(chatId, 'сам пашел!');
-//     } else {
-//         bot.sendMessage(chatId, 'Я очень люблю кушот!');
-//     }
-
-//   });
-
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
     const cityName = msg.text;
@@ -32,8 +19,12 @@ bot.on('message', async (msg) => {
       };
 
       const response = await axios.request(options)
-      bot.sendMessage(chatId, `В ${msg.text} сейчас ${Math.round(response.data.main.temp)} градусов`)
-      
-      
+      bot.sendMessage(chatId, `
+        В ${msg.text} сейчас ${Math.round(response.data.main.temp)} градусов
+      Ощущается как ${response.data.main.feels_like}
+      Скорость ветра: ${response.data.wind.speed}
+      Давление: ${response.data.main.pressure}
+      `)
+
       console.log(response.data)
 });
